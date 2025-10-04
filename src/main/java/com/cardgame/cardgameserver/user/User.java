@@ -1,6 +1,5 @@
 package com.cardgame.cardgameserver.user;
 
-import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -16,7 +15,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
-import static jakarta.persistence.CascadeType.ALL;
 
 //@Entity
 //@Table(name = "users")
@@ -26,8 +24,7 @@ import static jakarta.persistence.CascadeType.ALL;
 @Getter
 @Setter
 public class User implements UserDetails {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private Long id;
     @NotNull
     @Email
@@ -37,10 +34,8 @@ public class User implements UserDetails {
     private String password;
     @NotNull
     private Boolean isDeleted;
-    @Enumerated(EnumType.STRING)
     @NotNull
     private UserRole userRole;
-    @OneToOne(cascade = ALL)
     @NotNull
     private Boolean isEnabled;
 
