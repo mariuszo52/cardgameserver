@@ -1,0 +1,13 @@
+spring:
+    datasource:
+      driver-class-name: com.mysql.cj.jdbc.Driver
+      url: jdbc:mysql://localhost:3306/cardgame
+      username: ${MYSQL_USERNAME}
+      password: ${MYSQL_PASS}
+    application:
+        name: cardgameserver
+    jpa:
+      hibernate:
+        ddl-auto: validate
+    liquibase:
+      change-log: db/master.xml
