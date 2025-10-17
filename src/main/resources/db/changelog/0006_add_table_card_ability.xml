@@ -1,0 +1,25 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0006" author="mariuszo52">
+        <createTable tableName="card_ability">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="card_id" type="integer">
+                <constraints foreignKeyName="fk_card_1"
+                             referencedTableName="card"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="ability_id" type="bigint">
+                <constraints foreignKeyName="fk_ability_1"
+                             referencedTableName="ability"
+                             referencedColumnNames="id"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

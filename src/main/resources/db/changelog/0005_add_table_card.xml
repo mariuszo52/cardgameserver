@@ -1,0 +1,42 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0005" author="mariuszo52">
+        <createTable tableName="card">
+            <column name="id" type="integer">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="VARCHAR(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="rarity" type="enum ('COMMON', 'RARE', 'EPIC', 'LEGENDARY')"/>
+            <column name="fraction_id" type="bigint">
+                <constraints foreignKeyName="fk_fraction_1"
+                             referencedTableName="fraction"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="image_link" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="quote" type="TEXT">
+                <constraints nullable="false"/>
+            </column>
+            <column name="preferred_lane" type="tinyint"/>
+            <column name="play_cost" type="integer"/>
+            <column name="add_cost" type="integer"/>
+            <column name="description" type="text">
+                <constraints nullable="false"/>
+            </column>
+            <column name="health" type="integer">
+                <constraints nullable="false"/>
+            </column>
+            <column name="attack" type="integer">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+    </changeSet>
+
+</databaseChangeLog>

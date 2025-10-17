@@ -1,9 +1,7 @@
 package com.cardgame.cardgameserver.card;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.cardgame.cardgameserver.card.ability.Ability;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
@@ -23,4 +21,7 @@ public class CardType {
     @NotEmpty
     @Size(min = 1, max = 100)
     private String name;
+    @ManyToOne
+    @JoinColumn(name = "ability_id")
+    private Ability ability;
 }

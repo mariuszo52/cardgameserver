@@ -37,8 +37,8 @@ public class Card {
     private String quote;
     @ManyToMany
     @JoinTable(name = "card_ability",
-    joinColumns = @JoinColumn(name = "card"),
-    inverseJoinColumns = @JoinColumn(name = "ability"))
+    joinColumns = @JoinColumn(name = "card_id"),
+    inverseJoinColumns = @JoinColumn(name = "ability_id"))
     private List<Ability> abilities = new ArrayList<>();
     @Enumerated(EnumType.ORDINAL)
     private PreferredLane preferredLane;

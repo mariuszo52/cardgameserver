@@ -1,0 +1,94 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0002" author="mariuszo52">
+        <createTable tableName="ability">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" nullable="false"/>
+            </column>
+            <column name="name" type="varchar(100)">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_line" type="int"/>
+            <column name="number_of_targets" type="int"/>
+            <column name="affects_own_cards" type="bit"/>
+            <column name="change_type" type="enum ('BOTH', 'HEALTH', 'ATTACK')"/>
+            <column name="change_value" type="int"/>
+            <column name="change_to_value" type="int"/>
+            <column name="active_for_attacks" type="int"/>
+            <column name="active_for_turns" type="int"/>
+            <column name="required_line" type="int"/>
+            <column name="required_count_on_board" type="int"/>
+            <column name="required_health_to_activate" type="int"/>
+            <column name="waits_before_attacking" type="bit"/>
+            <column name="attacks_per_turn" type="int"/>
+            <column name="capital_draws_two_cards" type="bit"/>
+            <column name="can_attack_hero_in_line2" type="bit"/>
+        </createTable>
+
+        <createTable tableName="ability_target_card_ids">
+            <column name="ability_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="target_card_ids" type="int">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="ability_target_card_ids"
+                baseColumnNames="ability_id"
+                referencedTableName="ability"
+                referencedColumnNames="id"
+                constraintName="fk_ability_target_card_ids"/>
+
+        <createTable tableName="ability_affecting_artifact_ids">
+                <column name="ability_id" type="bigint">
+                    <constraints nullable="false"/>
+                </column>
+                <column name="affecting_artifact_ids" type="bigint">
+                    <constraints nullable="false"/>
+                </column>
+            </createTable>
+            <addForeignKeyConstraint
+                    baseTableName="ability_affecting_artifact_ids"
+                    baseColumnNames="ability_id"
+                    referencedTableName="ability"
+                    referencedColumnNames="id"
+                    constraintName="fk_ability_affecting_artifact_ids"/>
+        <createTable tableName="ability_affecting_location_ids">
+            <column name="ability_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="affecting_location_ids" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="ability_affecting_location_ids"
+                baseColumnNames="ability_id"
+                referencedTableName="ability"
+                referencedColumnNames="id"
+                constraintName="fk_ability_affecting_location_ids"/>
+        <createTable tableName="ability_required_card_ids_on_board">
+            <column name="ability_id" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+            <column name="required_card_ids_on_board" type="bigint">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+
+        <addForeignKeyConstraint
+                baseTableName="ability_required_card_ids_on_board"
+                baseColumnNames="ability_id"
+                referencedTableName="ability"
+                referencedColumnNames="id"
+                constraintName="fk_ability_required_card_ids_on_board"/>
+
+    </changeSet>
+
+</databaseChangeLog>
