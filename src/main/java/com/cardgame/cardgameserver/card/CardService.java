@@ -53,9 +53,9 @@ public class CardService {
     private String saveFile(@NotNull MultipartFile file) throws IOException {
         if (file.isEmpty()) throw new IllegalArgumentException("File is empty");
         BufferedOutputStream outputStream = new BufferedOutputStream(
-                new FileOutputStream("/resources" + file.getOriginalFilename()));
+                new FileOutputStream("src/main/resources/" + file.getOriginalFilename()));
         outputStream.write(file.getBytes());
-        return "/resources" + file.getOriginalFilename();
+        return "src/main/resources/" + file.getOriginalFilename();
     }
 }
 
