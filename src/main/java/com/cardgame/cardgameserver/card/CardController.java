@@ -20,7 +20,7 @@ public class CardController {
     }
 
     @PostMapping("/card")
-    ResponseEntity<?> createCard(
+    public ResponseEntity<?> createCard(
             @RequestParam("image") MultipartFile imageFile,
             @RequestParam("id") Integer id,
             @RequestParam("rarity") String rarity,

@@ -1,4 +1,4 @@
-package com.cardgame.cardgameserver.card;
+package com.cardgame.cardgameserver.card.cardType;
 
 import com.cardgame.cardgameserver.card.ability.Ability;
 import jakarta.persistence.*;

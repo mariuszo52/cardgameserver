@@ -1,10 +1,11 @@
 package com.cardgame.cardgameserver.card.ability;
 
-import com.cardgame.cardgameserver.card.CardType;
+import com.cardgame.cardgameserver.card.cardType.CardType;
 import com.cardgame.cardgameserver.card.Line;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -15,7 +16,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
-public class Ability {
+@Builder
+public class Ability
+{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
