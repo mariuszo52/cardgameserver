@@ -7,6 +7,7 @@ import com.cardgame.cardgameserver.card.fraction.FractionRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
@@ -55,6 +56,13 @@ public class CardService {
                 new FileOutputStream("src/main/resources/" + file.getOriginalFilename()));
         outputStream.write(file.getBytes());
         return "src/main/resources/" + file.getOriginalFilename();
+    }
+
+    @Transactional(readOnly = true)
+    public List<CardDto> getAllCards() {
+        return StreamSupport.stream(cardRepository.findAll().spliterator(), false)
+                .map(CardMapper::cartToCardDto)
+                .toList();
     }
 }
 

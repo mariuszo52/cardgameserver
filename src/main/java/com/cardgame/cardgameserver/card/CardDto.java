@@ -1,23 +1,21 @@
 package com.cardgame.cardgameserver.card;
 
-import com.cardgame.cardgameserver.card.ability.Ability;
-import com.cardgame.cardgameserver.card.fraction.Fraction;
-import jakarta.persistence.*;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
 @Builder
-public class Card {
+public class CardDto {
     @Id
     @NotNull
     private Integer id;
@@ -25,10 +23,10 @@ public class Card {
     @Size(min = 1, max = 50)
     private String name;
     @Enumerated(EnumType.STRING)
-    private CardRarity rarity;
+    private String rarity;
     @NotNull
     @ManyToOne
-    private Fraction fraction;
+    private String fraction;
     @NotNull
     @NotBlank
     @Size(min = 1, max = 1000)
@@ -37,13 +35,8 @@ public class Card {
     @NotBlank
     @Size(min = 1, max = 1000)
     private String quote;
-    @ManyToMany
-    @JoinTable(name = "card_ability",
-    joinColumns = @JoinColumn(name = "card_id"),
-    inverseJoinColumns = @JoinColumn(name = "ability_id"))
-    private List<Ability> abilities = new ArrayList<>();
-    @Enumerated(EnumType.ORDINAL)
-    private PreferredLane preferredLane;
+    private List<String> abilitiesNames = new ArrayList<>();
+    private String preferredLane;
     @Min(1)
     @Max(10)
     private Integer playCost;

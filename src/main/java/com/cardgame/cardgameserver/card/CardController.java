@@ -2,10 +2,7 @@ package com.cardgame.cardgameserver.card;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -17,6 +14,12 @@ public class CardController {
 
     public CardController(CardService cardService) {
         this.cardService = cardService;
+    }
+
+    @GetMapping("/cards")
+    public ResponseEntity<List<CardDto>> getAllCards() {
+        List<CardDto> cards = cardService.getAllCards();
+        return ResponseEntity.ok(cards);
     }
 
     @PostMapping("/card")
@@ -37,7 +40,7 @@ public class CardController {
         try {
             cardService.save(id, imageFile, rarity, fractionId, quote, abilitiesIds, preferredLane, playCost,
                     addCost, description, health, attack);
-        }catch (IOException e){
+        } catch (IOException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }
 
