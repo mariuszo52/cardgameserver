@@ -11,11 +11,13 @@ import lombok.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+@RequiredArgsConstructor
 @Getter
 public class Fraction {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NonNull
     @NotNull
     @Size(min = 1, max = 100)
     private String name;
