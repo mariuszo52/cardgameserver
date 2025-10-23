@@ -1,7 +1,7 @@
 package com.cardgame.cardgameserver.card.ability;
 
-import com.cardgame.cardgameserver.card.cardType.CardType;
 import com.cardgame.cardgameserver.card.Line;
+import com.cardgame.cardgameserver.card.fraction.Fraction;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.AllArgsConstructor;
@@ -28,8 +28,14 @@ public class Ability
     private String name;
     @Enumerated(EnumType.ORDINAL)
     private Line targetLine;
-    @OneToMany(mappedBy = "ability", fetch = FetchType.EAGER)
-    private List<CardType> targetCardTypes = new ArrayList<>();
+    @ManyToMany
+    @JoinTable(
+            name = "ability_influence_fraction",
+            joinColumns = @JoinColumn(name = "ability_id"),
+            inverseJoinColumns = @JoinColumn(name = "fraction_id")
+
+    )
+    private List<Fraction> targetCardFractions = new ArrayList<>();
     @ElementCollection(fetch = FetchType.EAGER)
     private List<Integer> targetCardIds = new ArrayList<>();
     @Min(1)

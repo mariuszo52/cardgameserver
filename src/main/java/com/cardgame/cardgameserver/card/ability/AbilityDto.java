@@ -1,10 +1,7 @@
 package com.cardgame.cardgameserver.card.ability;
 
 import jakarta.validation.constraints.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
 
@@ -12,6 +9,7 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
+@Getter
 public class AbilityDto {
     private Long id;
     @NotNull
@@ -19,7 +17,7 @@ public class AbilityDto {
     @Size(min = 1, max = 100)
     private String name;
     private String targetLine;
-    private List<Long> targetCardTypesIds;
+    private List<Integer> targetFractionIds;
     private List<Integer> targetCardIds;
     @Min(1)
     @Max(10)

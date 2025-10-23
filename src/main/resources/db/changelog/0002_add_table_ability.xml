@@ -31,10 +31,8 @@
 
         <createTable tableName="ability_target_card_ids">
             <column name="ability_id" type="bigint">
-                <constraints nullable="false"/>
             </column>
             <column name="target_card_ids" type="int">
-                <constraints nullable="false"/>
             </column>
         </createTable>
 
@@ -46,25 +44,21 @@
                 constraintName="fk_ability_target_card_ids"/>
 
         <createTable tableName="ability_affecting_artifact_ids">
-                <column name="ability_id" type="bigint">
-                    <constraints nullable="false"/>
-                </column>
-                <column name="affecting_artifact_ids" type="bigint">
-                    <constraints nullable="false"/>
-                </column>
-            </createTable>
-            <addForeignKeyConstraint
-                    baseTableName="ability_affecting_artifact_ids"
-                    baseColumnNames="ability_id"
-                    referencedTableName="ability"
-                    referencedColumnNames="id"
-                    constraintName="fk_ability_affecting_artifact_ids"/>
+            <column name="ability_id" type="bigint">
+            </column>
+            <column name="affecting_artifact_ids" type="bigint">
+            </column>
+        </createTable>
+        <addForeignKeyConstraint
+                baseTableName="ability_affecting_artifact_ids"
+                baseColumnNames="ability_id"
+                referencedTableName="ability"
+                referencedColumnNames="id"
+                constraintName="fk_ability_affecting_artifact_ids"/>
         <createTable tableName="ability_affecting_location_ids">
             <column name="ability_id" type="bigint">
-                <constraints nullable="false"/>
             </column>
             <column name="affecting_location_ids" type="bigint">
-                <constraints nullable="false"/>
             </column>
         </createTable>
         <addForeignKeyConstraint
@@ -75,10 +69,8 @@
                 constraintName="fk_ability_affecting_location_ids"/>
         <createTable tableName="ability_required_card_ids_on_board">
             <column name="ability_id" type="bigint">
-                <constraints nullable="false"/>
             </column>
             <column name="required_card_ids_on_board" type="bigint">
-                <constraints nullable="false"/>
             </column>
         </createTable>
 

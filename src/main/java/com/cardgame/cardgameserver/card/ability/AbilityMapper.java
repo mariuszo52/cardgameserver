@@ -1,8 +1,8 @@
 package com.cardgame.cardgameserver.card.ability;
 
 import com.cardgame.cardgameserver.card.Line;
-import com.cardgame.cardgameserver.card.cardType.CardType;
-import com.cardgame.cardgameserver.card.cardType.CardTypeRepository;
+import com.cardgame.cardgameserver.card.fraction.Fraction;
+import com.cardgame.cardgameserver.card.fraction.FractionRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -10,34 +10,40 @@ import java.util.stream.StreamSupport;
 
 @Service
 public class AbilityMapper {
-    private final CardTypeRepository cardTypeRepository;
+    private final FractionRepository fractionRepository;
 
-    public AbilityMapper(CardTypeRepository cardTypeRepository) {
-        this.cardTypeRepository = cardTypeRepository;
+    public AbilityMapper(FractionRepository fractionRepository) {
+        this.fractionRepository = fractionRepository;
     }
-
 
     public Ability maptoAbility(AbilityDto abilityDto) {
         if (abilityDto == null) {
             return null;
         }
-        List<CardType> cardTypes = StreamSupport.stream(cardTypeRepository.findAllById(abilityDto.getTargetCardTypesIds()).spliterator(), false)
+        List<Fraction> fractions = StreamSupport.stream(fractionRepository.findAllById(abilityDto.getTargetFractionIds()).spliterator(),
+                        false)
                 .toList();
+        Line targetLine = abilityDto.getTargetLine() != null ?
+                Line.valueOf(abilityDto.getTargetLine()) : null;
+        AbilityChangeType changeType = abilityDto.getChangeType() != null ?
+                AbilityChangeType.valueOf(abilityDto.getChangeType()) : null;
+        Line requiredLine = abilityDto.getRequiredLine() != null ?
+                Line.valueOf(abilityDto.getRequiredLine()) : null;
         return Ability.builder()
                 .name(abilityDto.getName())
-                .targetLine(Line.valueOf(abilityDto.getTargetLine()))
-                .targetCardTypes(cardTypes)
+                .targetLine(targetLine)
                 .targetCardIds(abilityDto.getTargetCardIds())
+                .targetCardFractions(fractions)
                 .numberOfTargets(abilityDto.getNumberOfTargets())
                 .affectsOwnCards(abilityDto.getAffectsOwnCards())
-                .changeType(AbilityChangeType.valueOf(abilityDto.getChangeType()))
+                .changeType(changeType)
                 .changeValue(abilityDto.getChangeValue())
                 .changeToValue(abilityDto.getChangeToValue())
                 .activeForAttacks(abilityDto.getActiveForAttacks())
                 .activeForTurns(abilityDto.getActiveForTurns())
                 .affectingArtifactIds(abilityDto.getAffectingArtifactIds())
                 .affectingLocationIds(abilityDto.getAffectingLocationIds())
-                .requiredLine(Line.valueOf(abilityDto.getRequiredLine()))
+                .requiredLine(requiredLine)
                 .requiredCardIdsOnBoard(abilityDto.getRequiredCardIdsOnBoard())
                 .requiredCountOnBoard(abilityDto.getRequiredCountOnBoard())
                 .requiredHealthToActivate(abilityDto.getRequiredHealthToActivate())
@@ -46,6 +52,5 @@ public class AbilityMapper {
                 .capitalDrawsTwoCards(abilityDto.getCapitalDrawsTwoCards())
                 .canAttackHeroInLine2(abilityDto.getCanAttackHeroInLine2())
                 .build();
-
     }
 }
