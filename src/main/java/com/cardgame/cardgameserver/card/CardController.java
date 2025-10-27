@@ -26,6 +26,7 @@ public class CardController {
     public ResponseEntity<?> createCard(
             @RequestParam("image") MultipartFile imageFile,
             @RequestParam("id") Integer id,
+            @RequestParam("name") String name,
             @RequestParam("rarity") String rarity,
             @RequestParam("fraction") Integer fractionId,
             @RequestParam("quote") String quote,
@@ -38,7 +39,7 @@ public class CardController {
             @RequestParam("attack") Integer attack
     ) {
         try {
-            cardService.save(id, imageFile, rarity, fractionId, quote, abilitiesIds, preferredLane, playCost,
+            cardService.save(id, name, imageFile, rarity, fractionId, quote, abilitiesIds, preferredLane, playCost,
                     addCost, description, health, attack);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

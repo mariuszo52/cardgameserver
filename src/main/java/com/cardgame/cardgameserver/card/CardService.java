@@ -26,7 +26,7 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public void save(Integer id, MultipartFile imageFile, String rarity, Integer fractionId,
+    public void save(Integer id, String name, MultipartFile imageFile, String rarity, Integer fractionId,
                      String quote, List<Long> abilitiesIds, String preferredLane, Integer playCost,
                      Integer addCost, String description, Integer health, Integer attack) throws IOException {
         String imageLink = saveFile(imageFile);
@@ -36,6 +36,7 @@ public class CardService {
                 .toList();
         Card card = Card.builder()
                 .id(id)
+                .name(name)
                 .imageLink(imageLink)
                 .rarity(CardRarity.valueOf(rarity))
                 .fraction(fraction)

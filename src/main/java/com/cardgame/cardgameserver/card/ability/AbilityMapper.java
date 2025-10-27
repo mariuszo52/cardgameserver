@@ -1,6 +1,7 @@
 package com.cardgame.cardgameserver.card.ability;
 
 import com.cardgame.cardgameserver.card.Line;
+import com.cardgame.cardgameserver.card.ability.dto.AbilityDto;
 import com.cardgame.cardgameserver.card.fraction.Fraction;
 import com.cardgame.cardgameserver.card.fraction.FractionRepository;
 import org.springframework.stereotype.Service;

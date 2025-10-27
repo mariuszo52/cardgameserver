@@ -1,4 +1,4 @@
-package com.cardgame.cardgameserver.card.ability;
+package com.cardgame.cardgameserver.card.ability.dto;
 
 import jakarta.validation.constraints.*;
 import lombok.*;
