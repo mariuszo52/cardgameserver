@@ -26,39 +26,30 @@ public class Card {
     private String name;
     @Enumerated(EnumType.STRING)
     private CardRarity rarity;
+    @Enumerated(EnumType.STRING)
+    private CardType cardType;
     @NotNull
-    @ManyToOne
-    private Fraction fraction;
+    @ManyToMany
+    @JoinTable(name = "card_fraction",
+    joinColumns = @JoinColumn(name = "card_id"),
+    inverseJoinColumns = @JoinColumn(name = "fraction_id"))
+    private List<Fraction> fractions;
     @NotNull
     @NotBlank
     @Size(min = 1, max = 1000)
     private String imageLink;
-    @NotNull
-    @NotBlank
-    @Size(min = 1, max = 1000)
-    private String quote;
     @ManyToMany
     @JoinTable(name = "card_ability",
     joinColumns = @JoinColumn(name = "card_id"),
     inverseJoinColumns = @JoinColumn(name = "ability_id"))
     private List<Ability> abilities = new ArrayList<>();
-    @Enumerated(EnumType.ORDINAL)
-    private PreferredLane preferredLane;
-    @Min(1)
-    @Max(10)
-    private Integer playCost;
-    @Min(1)
-    @Max(10)
-    private Integer addCost;
+
     @NotNull
     @NotBlank
     @Size(min = 1, max = 1000)
     private String description;
     @NotNull
-    private Integer health;
-    @NotNull
     private Integer attack;
-
-
-
+    @NotNull
+    private Boolean hasEchoOfMeditation;
 }

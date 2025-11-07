@@ -3,8 +3,9 @@ package com.cardgame.cardgameserver.card;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
-import jakarta.persistence.ManyToOne;
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
@@ -24,25 +25,16 @@ public class CardDto {
     private String name;
     @Enumerated(EnumType.STRING)
     private String rarity;
+    private String cardType;
     @NotNull
-    @ManyToOne
-    private String fraction;
+    private List<String> fractions;
     @NotNull
     @NotBlank
     @Size(min = 1, max = 1000)
     private String imageLink;
     @NotNull
     @NotBlank
-    @Size(min = 1, max = 1000)
-    private String quote;
     private List<String> abilitiesNames = new ArrayList<>();
-    private String preferredLane;
-    @Min(1)
-    @Max(10)
-    private Integer playCost;
-    @Min(1)
-    @Max(10)
-    private Integer addCost;
     @NotNull
     @NotBlank
     @Size(min = 1, max = 1000)
@@ -51,7 +43,6 @@ public class CardDto {
     private Integer health;
     @NotNull
     private Integer attack;
-
-
-
+    @NotNull
+    private Boolean hasEchoOfMeditation;
 }

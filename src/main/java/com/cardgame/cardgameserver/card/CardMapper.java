@@ -16,15 +16,12 @@ public class CardMapper {
                 .id(card.getId())
                 .name(card.getName())
                 .rarity(card.getRarity().name())
-                .fraction(card.getFraction().getName())
+                .cardType(card.getCardType().name())
+                .fractions(card.getFractions().stream().map(fraction -> fraction.getName()).toList())
                 .imageLink(card.getImageLink())
-                .quote(card.getQuote())
                 .abilitiesNames(abilitiesNames)
-                .preferredLane(card.getPreferredLane().name())
-                .playCost(card.getPlayCost())
-                .addCost(card.getAddCost())
                 .description(card.getDescription())
-                .health(card.getHealth())
+                .hasEchoOfMeditation(card.getHasEchoOfMeditation())
                 .attack(card.getAttack()).build();
     }
 }

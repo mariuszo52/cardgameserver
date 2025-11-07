@@ -28,19 +28,16 @@ public class CardController {
             @RequestParam("id") Integer id,
             @RequestParam("name") String name,
             @RequestParam("rarity") String rarity,
-            @RequestParam("fraction") Integer fractionId,
-            @RequestParam("quote") String quote,
+            @RequestParam("fraction") List<Integer> fractionIds,
+            @RequestParam("cardType") String cardType,
             @RequestParam("abilitiesIds") List<Long> abilitiesIds,
-            @RequestParam("preferredLane") String preferredLane,
-            @RequestParam("playCost") Integer playCost,
-            @RequestParam("addCost") Integer addCost,
+            @RequestParam("hasEchoOfMeditation") Boolean hasEchoOfMeditation,
             @RequestParam("description") String description,
-            @RequestParam("health") Integer health,
             @RequestParam("attack") Integer attack
     ) {
         try {
-            cardService.save(id, name, imageFile, rarity, fractionId, quote, abilitiesIds, preferredLane, playCost,
-                    addCost, description, health, attack);
+            cardService.save(id, name, imageFile, rarity, fractionIds, cardType, abilitiesIds, hasEchoOfMeditation,
+                    description, attack);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(e.getMessage());
         }

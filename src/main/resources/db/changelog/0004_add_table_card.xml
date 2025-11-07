@@ -7,33 +7,46 @@
     <changeSet id="0004" author="mariuszo52">
         <createTable tableName="card">
             <column name="id" type="integer">
-                <constraints primaryKey="true" nullable="false"/>
+                <constraints unique="true" primaryKey="true" nullable="false"/>
             </column>
             <column name="name" type="VARCHAR(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="rarity" type="enum ('COMMON', 'RARE', 'EPIC', 'LEGENDARY')"/>
+            <column name="rarity" type="enum ('COMMON', 'RARE', 'LEGENDARY')"/>
             <column name="fraction_id" type="bigint">
                 <constraints foreignKeyName="fk_fraction_1"
                              referencedTableName="fraction"
                              referencedColumnNames="id"/>
             </column>
-            <column name="image_link" type="TEXT">
+            <column name="image_link" type="TEXT">c
                 <constraints nullable="false"/>
             </column>
-            <column name="quote" type="TEXT">
-                <constraints nullable="false"/>
-            </column>
-            <column name="preferred_lane" type="tinyint"/>
-            <column name="play_cost" type="integer"/>
-            <column name="add_cost" type="integer"/>
+            <column name="card_type" type="ENUM('SPELL', 'MANA_SOURCE')"/>
             <column name="description" type="text">
                 <constraints nullable="false"/>
             </column>
-            <column name="health" type="integer">
+            <column name="attack" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="attack" type="integer">
+            <column name="has_echo_of_meditation" type="BIT">
+                <constraints nullable="false"/>
+            </column>
+        </createTable>
+        <createTable tableName="card_fraction">
+            <column name="id" type="bigint" autoIncrement="true">
+                <constraints primaryKey="true" unique="true"/>
+            </column>
+            <column name="card_id" type="integer">
+                <constraints foreignKeyName="fk_card_2"
+                             referencedTableName="card"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="fraction_id" type="bigint">
+                <constraints foreignKeyName="fk_fraction_2"
+                             referencedTableName="fraction"
+                             referencedColumnNames="id"/>
+            </column>
+            <column name="play_cost" type="integer">
                 <constraints nullable="false"/>
             </column>
         </createTable>

@@ -26,22 +26,6 @@ public class Ability
     @NotBlank
     @Size(min = 1, max = 100)
     private String name;
-    @Enumerated(EnumType.ORDINAL)
-    private Line targetLine;
-    @ManyToMany
-    @JoinTable(
-            name = "ability_influence_fraction",
-            joinColumns = @JoinColumn(name = "ability_id"),
-            inverseJoinColumns = @JoinColumn(name = "fraction_id")
-
-    )
-    private List<Fraction> targetCardFractions = new ArrayList<>();
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Integer> targetCardIds = new ArrayList<>();
-    @Min(1)
-    @Max(10)
-    private Integer numberOfTargets;
-    private Boolean affectsOwnCards;
     @Enumerated(EnumType.STRING)
     private AbilityChangeType changeType;
     @Min(1)
@@ -50,30 +34,6 @@ public class Ability
     @Min(0)
     @Max(100)
     private Integer changeToValue;
-
-    private Integer activeForAttacks;
     private Integer activeForTurns;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Long> affectingArtifactIds = new ArrayList<>();
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Long> affectingLocationIds  = new ArrayList<>();
-    @Enumerated(EnumType.ORDINAL)
-    private Line requiredLine;
-    @ElementCollection(fetch = FetchType.EAGER)
-    private List<Long> requiredCardIdsOnBoard = new ArrayList<>();
-    @Min(1)
-    @Max(10)
-    private Integer requiredCountOnBoard;
-    @Min(1)
-    @Max(100)
-    private Integer requiredHealthToActivate;
-
-    private Boolean waitsBeforeAttacking;
-    @Min(1)
-    @Max(100)
-    private Integer attacksPerTurn;
-    private Boolean capitalDrawsTwoCards;
-
-    private Boolean canAttackHeroInLine2;
 
 }

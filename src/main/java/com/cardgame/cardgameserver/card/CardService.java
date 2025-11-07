@@ -4,13 +4,14 @@ import com.cardgame.cardgameserver.card.ability.Ability;
 import com.cardgame.cardgameserver.card.ability.AbilityRepository;
 import com.cardgame.cardgameserver.card.fraction.Fraction;
 import com.cardgame.cardgameserver.card.fraction.FractionRepository;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.io.*;
+import java.io.BufferedOutputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 import java.util.stream.StreamSupport;
 
@@ -26,27 +27,22 @@ public class CardService {
         this.cardRepository = cardRepository;
     }
 
-    public void save(Integer id, String name, MultipartFile imageFile, String rarity, Integer fractionId,
-                     String quote, List<Long> abilitiesIds, String preferredLane, Integer playCost,
-                     Integer addCost, String description, Integer health, Integer attack) throws IOException {
+    public void save(Integer id, String name, MultipartFile imageFile, String rarity, List<Integer> fractionIds,
+                     String cardType, List<Long> abilitiesIds, Boolean hasEchoOfMeditation, String description, Integer attack) throws IOException {
         String imageLink = saveFile(imageFile);
-        Fraction fraction = fractionRepository.findById(fractionId)
-                .orElseThrow(() -> new EntityNotFoundException("Fraction not found"));
+        List<Fraction> fractions = StreamSupport.stream(fractionRepository.findAllById(fractionIds).spliterator(), false).toList();
         List<Ability> abilities = StreamSupport.stream(abilityRepository.findAllById(abilitiesIds).spliterator(), false)
                 .toList();
         Card card = Card.builder()
                 .id(id)
                 .name(name)
                 .imageLink(imageLink)
+                .cardType(CardType.valueOf(cardType))
                 .rarity(CardRarity.valueOf(rarity))
-                .fraction(fraction)
-                .quote(quote)
-                .addCost(addCost)
-                .playCost(playCost)
+                .fractions(fractions)
                 .description(description)
-                .health(health)
                 .attack(attack)
-                .preferredLane(PreferredLane.valueOf(preferredLane))
+                .hasEchoOfMeditation(hasEchoOfMeditation)
                 .abilities(abilities).build();
         cardRepository.save(card);
     }
