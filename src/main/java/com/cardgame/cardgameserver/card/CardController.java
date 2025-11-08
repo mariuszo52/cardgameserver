@@ -1,5 +1,8 @@
 package com.cardgame.cardgameserver.card;
 
+import com.cardgame.cardgameserver.card.cardFraction.CardFractionDto;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,9 +14,11 @@ import java.util.List;
 @RestController
 public class CardController {
     private final CardService cardService;
+    private final ObjectMapper objectMapper;
 
-    public CardController(CardService cardService) {
+    public CardController(CardService cardService, ObjectMapper objectMapper) {
         this.cardService = cardService;
+        this.objectMapper = objectMapper;
     }
 
     @GetMapping("/cards")
@@ -28,7 +33,7 @@ public class CardController {
             @RequestParam("id") Integer id,
             @RequestParam("name") String name,
             @RequestParam("rarity") String rarity,
-            @RequestParam("fraction") List<Integer> fractionIds,
+            @RequestParam("fractionsCosts") String fractionsCosts,
             @RequestParam("cardType") String cardType,
             @RequestParam("abilitiesIds") List<Long> abilitiesIds,
             @RequestParam("hasEchoOfMeditation") Boolean hasEchoOfMeditation,
@@ -36,7 +41,10 @@ public class CardController {
             @RequestParam("attack") Integer attack
     ) {
         try {
-            cardService.save(id, name, imageFile, rarity, fractionIds, cardType, abilitiesIds, hasEchoOfMeditation,
+            List<CardFractionDto> fc = objectMapper.readValue(fractionsCosts,
+                    new TypeReference<>() {
+                    });
+            cardService.save(id, name, imageFile, rarity, fc, cardType, abilitiesIds, hasEchoOfMeditation,
                     description, attack);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

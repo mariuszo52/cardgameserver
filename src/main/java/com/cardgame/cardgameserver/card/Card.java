@@ -33,7 +33,7 @@ public class Card {
     @JoinTable(name = "card_fraction",
     joinColumns = @JoinColumn(name = "card_id"),
     inverseJoinColumns = @JoinColumn(name = "fraction_id"))
-    private List<Fraction> fractions;
+    private List<Fraction> fractions = new ArrayList<>();
     @NotNull
     @NotBlank
     @Size(min = 1, max = 1000)

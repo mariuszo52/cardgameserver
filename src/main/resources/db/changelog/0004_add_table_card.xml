@@ -13,11 +13,6 @@
                 <constraints nullable="false"/>
             </column>
             <column name="rarity" type="enum ('COMMON', 'RARE', 'LEGENDARY')"/>
-            <column name="fraction_id" type="bigint">
-                <constraints foreignKeyName="fk_fraction_1"
-                             referencedTableName="fraction"
-                             referencedColumnNames="id"/>
-            </column>
             <column name="image_link" type="TEXT">c
                 <constraints nullable="false"/>
             </column>

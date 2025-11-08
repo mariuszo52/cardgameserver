@@ -2,6 +2,9 @@ package com.cardgame.cardgameserver.card;
 
 import com.cardgame.cardgameserver.card.ability.Ability;
 import com.cardgame.cardgameserver.card.ability.AbilityRepository;
+import com.cardgame.cardgameserver.card.cardFraction.CardFraction;
+import com.cardgame.cardgameserver.card.cardFraction.CardFractionDto;
+import com.cardgame.cardgameserver.card.cardFraction.CardFractionRepository;
 import com.cardgame.cardgameserver.card.fraction.Fraction;
 import com.cardgame.cardgameserver.card.fraction.FractionRepository;
 import jakarta.validation.constraints.NotNull;
@@ -20,17 +23,19 @@ public class CardService {
     private final FractionRepository fractionRepository;
     private final AbilityRepository abilityRepository;
     private final CardRepository cardRepository;
+    private final CardFractionRepository cardFractionRepository;
 
-    public CardService(FractionRepository fractionRepository, AbilityRepository abilityRepository, CardRepository cardRepository) {
+    public CardService(FractionRepository fractionRepository, AbilityRepository abilityRepository, CardRepository cardRepository, CardFractionRepository cardFractionRepository) {
         this.fractionRepository = fractionRepository;
         this.abilityRepository = abilityRepository;
         this.cardRepository = cardRepository;
+        this.cardFractionRepository = cardFractionRepository;
     }
 
-    public void save(Integer id, String name, MultipartFile imageFile, String rarity, List<Integer> fractionIds,
+    @Transactional
+    public void save(Integer id, String name, MultipartFile imageFile, String rarity, List<CardFractionDto> fractionCosts,
                      String cardType, List<Long> abilitiesIds, Boolean hasEchoOfMeditation, String description, Integer attack) throws IOException {
         String imageLink = saveFile(imageFile);
-        List<Fraction> fractions = StreamSupport.stream(fractionRepository.findAllById(fractionIds).spliterator(), false).toList();
         List<Ability> abilities = StreamSupport.stream(abilityRepository.findAllById(abilitiesIds).spliterator(), false)
                 .toList();
         Card card = Card.builder()
@@ -39,12 +44,17 @@ public class CardService {
                 .imageLink(imageLink)
                 .cardType(CardType.valueOf(cardType))
                 .rarity(CardRarity.valueOf(rarity))
-                .fractions(fractions)
                 .description(description)
                 .attack(attack)
                 .hasEchoOfMeditation(hasEchoOfMeditation)
                 .abilities(abilities).build();
         cardRepository.save(card);
+        fractionCosts.forEach(fractionCost -> {
+            Fraction fraction = fractionRepository.findFractionByName(fractionCost.getFractionName())
+                    .orElseThrow(() -> new IllegalArgumentException("No such fraction"));
+            CardFraction cardFraction = new CardFraction(null, card, fraction, fractionCost.getCost());
+            cardFractionRepository.save(cardFraction);
+        });
     }
 
     private String saveFile(@NotNull MultipartFile file) throws IOException {
