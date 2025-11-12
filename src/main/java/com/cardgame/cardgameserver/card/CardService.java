@@ -60,9 +60,9 @@ public class CardService {
     private String saveFile(@NotNull MultipartFile file) throws IOException {
         if (file.isEmpty()) throw new IllegalArgumentException("File is empty");
         BufferedOutputStream outputStream = new BufferedOutputStream(
-                new FileOutputStream("src/main/resources/" + file.getOriginalFilename()));
+                new FileOutputStream("uploads/cards/" + file.getOriginalFilename()));
         outputStream.write(file.getBytes());
-        return "src/main/resources/" + file.getOriginalFilename();
+        return "http://localhost:8080/uploads/cards/" + file.getOriginalFilename();
     }
 
     @Transactional(readOnly = true)
