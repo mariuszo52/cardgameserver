@@ -8,6 +8,7 @@ import com.cardgame.cardgameserver.card.cardFraction.CardFractionRepository;
 import com.cardgame.cardgameserver.card.fraction.Fraction;
 import com.cardgame.cardgameserver.card.fraction.FractionRepository;
 import jakarta.validation.constraints.NotNull;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +25,10 @@ public class CardService {
     private final AbilityRepository abilityRepository;
     private final CardRepository cardRepository;
     private final CardFractionRepository cardFractionRepository;
+    @Value(value = "${UPLOADS_LOCATION}")
+    private String UPLOADS_LOCATION;
+    @Value(value = "${APP_SERVER}")
+    private String APP_SERVER;
 
     public CardService(FractionRepository fractionRepository, AbilityRepository abilityRepository, CardRepository cardRepository, CardFractionRepository cardFractionRepository) {
         this.fractionRepository = fractionRepository;
@@ -60,9 +65,9 @@ public class CardService {
     private String saveFile(@NotNull MultipartFile file) throws IOException {
         if (file.isEmpty()) throw new IllegalArgumentException("File is empty");
         BufferedOutputStream outputStream = new BufferedOutputStream(
-                new FileOutputStream("uploads/cards/" + file.getOriginalFilename()));
+                new FileOutputStream(UPLOADS_LOCATION + "cards/" + file.getOriginalFilename()));
         outputStream.write(file.getBytes());
-        return "http://localhost:8080/uploads/cards/" + file.getOriginalFilename();
+        return APP_SERVER + "/cards/" + file.getOriginalFilename();
     }
 
     @Transactional(readOnly = true)
