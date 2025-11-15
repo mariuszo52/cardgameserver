@@ -14,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.BufferedOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
@@ -64,11 +65,18 @@ public class CardService {
 
     private String saveFile(@NotNull MultipartFile file) throws IOException {
         if (file.isEmpty()) throw new IllegalArgumentException("File is empty");
-        BufferedOutputStream outputStream = new BufferedOutputStream(
-                new FileOutputStream(UPLOADS_LOCATION + "cards/" + file.getOriginalFilename()));
-        outputStream.write(file.getBytes());
+        File cardsFolder = new File(UPLOADS_LOCATION + "cards/");
+        if (!cardsFolder.exists()) {
+            cardsFolder.mkdirs();
+        }
+        File dest = new File(cardsFolder, file.getOriginalFilename());
+        try (BufferedOutputStream outputStream = new BufferedOutputStream(
+                new FileOutputStream(dest))) {
+            outputStream.write(file.getBytes());
+        }
         return APP_SERVER + "/cards/" + file.getOriginalFilename();
     }
+
 
     @Transactional(readOnly = true)
     public List<CardDto> getAllCards() {
