@@ -15,6 +15,7 @@ public class AbilityMapper {
         return Ability.builder()
                 .name(abilityDto.getName())
                 .changeType(changeType)
+                .isMeditation(abilityDto.getIsMeditation())
                 .changeValue(abilityDto.getChangeValue())
                 .changeToValue(abilityDto.getChangeToValue())
                 .activeForTurns(abilityDto.getActiveForTurns())

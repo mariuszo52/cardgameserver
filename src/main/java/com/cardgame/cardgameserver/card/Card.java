@@ -22,6 +22,8 @@ public class Card {
     @NotNull
     private Integer id;
     @NotNull
+    private String serialNumber;
+    @NotNull
     @Size(min = 1, max = 50)
     private String name;
     @Enumerated(EnumType.STRING)
@@ -50,6 +52,4 @@ public class Card {
     private String description;
     @NotNull
     private Integer attack;
-    @NotNull
-    private Boolean hasEchoOfMeditation;
 }

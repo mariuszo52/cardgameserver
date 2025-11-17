@@ -21,6 +21,8 @@ public class CardDto {
     @NotNull
     private Integer id;
     @NotNull
+    private String serialNumber;
+    @NotNull
     @Size(min = 1, max = 50)
     private String name;
     @Enumerated(EnumType.STRING)
@@ -43,6 +45,4 @@ public class CardDto {
     private Integer health;
     @NotNull
     private Integer attack;
-    @NotNull
-    private Boolean hasEchoOfMeditation;
 }

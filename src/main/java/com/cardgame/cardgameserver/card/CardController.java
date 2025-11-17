@@ -36,7 +36,7 @@ public class CardController {
             @RequestParam("fractionsCosts") String fractionsCosts,
             @RequestParam("cardType") String cardType,
             @RequestParam("abilitiesIds") List<Long> abilitiesIds,
-            @RequestParam("hasEchoOfMeditation") Boolean hasEchoOfMeditation,
+            @RequestParam("serialNumber") String serialNumber,
             @RequestParam("description") String description,
             @RequestParam("attack") Integer attack
     ) {
@@ -44,7 +44,7 @@ public class CardController {
             List<CardFractionDto> fc = objectMapper.readValue(fractionsCosts,
                     new TypeReference<>() {
                     });
-            cardService.save(id, name, imageFile, rarity, fc, cardType, abilitiesIds, hasEchoOfMeditation,
+            cardService.save(id, name, imageFile, rarity, fc, cardType, abilitiesIds, serialNumber,
                     description, attack);
         } catch (IOException e) {
             return ResponseEntity.badRequest().body(e.getMessage());

@@ -12,10 +12,13 @@
             <column name="name" type="varchar(100)">
                 <constraints nullable="false"/>
             </column>
-            <column name="change_type" type="enum ('MANA', 'HEALTH', 'ATTACK')"/>
+            <column name="change_type" type="enum ('MANA', 'HEALTH', 'ATTACK', 'ARMOR')"/>
             <column name="change_value" type="int"/>
             <column name="change_to_value" type="int"/>
             <column name="active_for_turns" type="int"/>
+            <column name="is_meditation" type="BIT">
+                <constraints nullable="false"/>
+            </column>
         </createTable>
     </changeSet>
 

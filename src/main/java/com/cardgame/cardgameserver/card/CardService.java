@@ -40,7 +40,7 @@ public class CardService {
 
     @Transactional
     public void save(Integer id, String name, MultipartFile imageFile, String rarity, List<CardFractionDto> fractionCosts,
-                     String cardType, List<Long> abilitiesIds, Boolean hasEchoOfMeditation, String description, Integer attack) throws IOException {
+                     String cardType, List<Long> abilitiesIds, String serialNumber, String description, Integer attack) throws IOException {
         String imageLink = saveFile(imageFile);
         List<Ability> abilities = StreamSupport.stream(abilityRepository.findAllById(abilitiesIds).spliterator(), false)
                 .toList();
@@ -52,7 +52,7 @@ public class CardService {
                 .rarity(CardRarity.valueOf(rarity))
                 .description(description)
                 .attack(attack)
-                .hasEchoOfMeditation(hasEchoOfMeditation)
+                .serialNumber(serialNumber)
                 .abilities(abilities).build();
         cardRepository.save(card);
         fractionCosts.forEach(fractionCost -> {

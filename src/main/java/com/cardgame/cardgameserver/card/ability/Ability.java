@@ -30,5 +30,7 @@ public class Ability
     @Max(100)
     private Integer changeToValue;
     private Integer activeForTurns;
+    @NotNull
+    private Boolean isMeditation;
 
 }

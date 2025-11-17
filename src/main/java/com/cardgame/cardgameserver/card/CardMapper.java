@@ -1,6 +1,7 @@
 package com.cardgame.cardgameserver.card;
 
 import com.cardgame.cardgameserver.card.ability.Ability;
+import com.cardgame.cardgameserver.card.fraction.Fraction;
 import jakarta.validation.Valid;
 
 import java.util.List;
@@ -17,11 +18,11 @@ public class CardMapper {
                 .name(card.getName())
                 .rarity(card.getRarity().name())
                 .cardType(card.getCardType().name())
-                .fractions(card.getFractions().stream().map(fraction -> fraction.getName()).toList())
+                .fractions(card.getFractions().stream().map(Fraction::getName).toList())
                 .imageLink(card.getImageLink())
                 .abilitiesNames(abilitiesNames)
                 .description(card.getDescription())
-                .hasEchoOfMeditation(card.getHasEchoOfMeditation())
+                .serialNumber(card.getSerialNumber())
                 .attack(card.getAttack()).build();
     }
 }

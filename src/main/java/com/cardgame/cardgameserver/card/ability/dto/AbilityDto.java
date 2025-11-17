@@ -24,4 +24,6 @@ public class AbilityDto {
     @Max(10)
     private Integer changeToValue;
     private Integer activeForTurns;
+    @NotNull
+    private Boolean isMeditation;
 }

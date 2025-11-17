@@ -23,7 +23,7 @@
             <column name="attack" type="integer">
                 <constraints nullable="false"/>
             </column>
-            <column name="has_echo_of_meditation" type="BIT">
+            <column name="serial_number" type="varchar(255)">
                 <constraints nullable="false"/>
             </column>
         </createTable>
