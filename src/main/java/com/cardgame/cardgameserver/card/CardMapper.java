@@ -1,26 +1,22 @@
 package com.cardgame.cardgameserver.card;
 
-import com.cardgame.cardgameserver.card.ability.Ability;
-import com.cardgame.cardgameserver.card.fraction.Fraction;
+import com.cardgame.cardgameserver.card.ability.AbilityMapper;
+import com.cardgame.cardgameserver.card.dto.CardUIDto;
+import com.cardgame.cardgameserver.card.fraction.FractionMapper;
 import jakarta.validation.Valid;
-
-import java.util.List;
 
 public class CardMapper {
 
-    public static CardDto cartToCardDto(@Valid Card card) {
+    public static CardUIDto cartToCardUIDto(@Valid Card card) {
         if (card == null) return null;
-        List<String> abilitiesNames = card.getAbilities().stream()
-                .map(Ability::getName)
-                .toList();
-        return CardDto.builder()
+        return CardUIDto.builder()
                 .id(card.getId())
                 .name(card.getName())
                 .rarity(card.getRarity().name())
                 .cardType(card.getCardType().name())
-                .fractions(card.getFractions().stream().map(Fraction::getName).toList())
+                .fractions(card.getFractions().stream().map(FractionMapper::fractionToFractionDto).toList())
                 .imageLink(card.getImageLink())
-                .abilitiesNames(abilitiesNames)
+                .abilities(card.getAbilities().stream().map(AbilityMapper::abilityToAbilityDto).toList())
                 .description(card.getDescription())
                 .serialNumber(card.getSerialNumber())
                 .attack(card.getAttack()).build();

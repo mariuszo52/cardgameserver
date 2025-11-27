@@ -1,6 +1,9 @@
 package com.cardgame.cardgameserver.card;
 
 import com.cardgame.cardgameserver.card.cardFraction.CardFractionDto;
+import com.cardgame.cardgameserver.card.dto.CardDto;
+import com.cardgame.cardgameserver.card.dto.CardUIDto;
+import com.cardgame.cardgameserver.card.dto.CardsDataDto;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.http.HttpStatus;
@@ -22,10 +25,11 @@ public class CardController {
     }
 
     @GetMapping("/cards")
-    public ResponseEntity<List<CardDto>> getAllCards() {
-        List<CardDto> cards = cardService.getAllCards();
+    public ResponseEntity<CardsDataDto> getAllCards() {
+        CardsDataDto cards = cardService.getAllCardsData();
         return ResponseEntity.ok(cards);
     }
+
 
     @PostMapping("/card")
     public ResponseEntity<?> createCard(

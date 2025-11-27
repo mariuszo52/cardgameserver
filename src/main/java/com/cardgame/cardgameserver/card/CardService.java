@@ -5,8 +5,12 @@ import com.cardgame.cardgameserver.card.ability.AbilityRepository;
 import com.cardgame.cardgameserver.card.cardFraction.CardFraction;
 import com.cardgame.cardgameserver.card.cardFraction.CardFractionDto;
 import com.cardgame.cardgameserver.card.cardFraction.CardFractionRepository;
+import com.cardgame.cardgameserver.card.dto.CardUIDto;
+import com.cardgame.cardgameserver.card.dto.CardsDataDto;
 import com.cardgame.cardgameserver.card.fraction.Fraction;
 import com.cardgame.cardgameserver.card.fraction.FractionRepository;
+import com.cardgame.cardgameserver.configuration.databaseVersions.DatabaseVersionRepository;
+import com.cardgame.cardgameserver.configuration.databaseVersions.Version;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -26,16 +30,18 @@ public class CardService {
     private final AbilityRepository abilityRepository;
     private final CardRepository cardRepository;
     private final CardFractionRepository cardFractionRepository;
+    private final DatabaseVersionRepository databaseVersionRepository;
     @Value(value = "${UPLOADS_LOCATION}")
     private String UPLOADS_LOCATION;
     @Value(value = "${APP_SERVER}")
     private String APP_SERVER;
 
-    public CardService(FractionRepository fractionRepository, AbilityRepository abilityRepository, CardRepository cardRepository, CardFractionRepository cardFractionRepository) {
+    public CardService(FractionRepository fractionRepository, AbilityRepository abilityRepository, CardRepository cardRepository, CardFractionRepository cardFractionRepository, DatabaseVersionRepository databaseVersionRepository) {
         this.fractionRepository = fractionRepository;
         this.abilityRepository = abilityRepository;
         this.cardRepository = cardRepository;
         this.cardFractionRepository = cardFractionRepository;
+        this.databaseVersionRepository = databaseVersionRepository;
     }
 
     @Transactional
@@ -60,6 +66,8 @@ public class CardService {
                     .orElseThrow(() -> new IllegalArgumentException("No such fraction"));
             CardFraction cardFraction = new CardFraction(null, card, fraction, fractionCost.getCost());
             cardFractionRepository.save(cardFraction);
+            Version version = databaseVersionRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("No such database version"));
+            version.setCardVersion(version.getCardVersion() + 1);
         });
     }
 
@@ -79,10 +87,13 @@ public class CardService {
 
 
     @Transactional(readOnly = true)
-    public List<CardDto> getAllCards() {
-        return StreamSupport.stream(cardRepository.findAll().spliterator(), false)
-                .map(CardMapper::cartToCardDto)
+    public CardsDataDto getAllCardsData() {
+        Long cardsVersion = databaseVersionRepository.findById(1L).orElseThrow(() -> new IllegalArgumentException("No such database version"))
+                .getCardVersion();
+        List<CardUIDto> cardUIDtoList = StreamSupport.stream(cardRepository.findAll().spliterator(), false)
+                .map(CardMapper::cartToCardUIDto)
                 .toList();
+        return new CardsDataDto(cardsVersion, cardUIDtoList);
     }
 }
 
