@@ -1,0 +1,14 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        https://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.2.xsd">
+
+    <changeSet id="0007" author="mariuszo52">
+       <insert tableName="version">
+           <column name="id" type="bigint" value="1"/>
+           <column name="card_version" type="bigint" value="1"/>
+       </insert>
+    </changeSet>
+
+</databaseChangeLog>

@@ -18,7 +18,7 @@ public class JwtService {
     private String refreshSecret;
 
     public String generateJwt(User user) {
-        final long duration = 1000L * 60 * 15;
+        final long duration = 1000L * 60 * 2;
         return generate(user, this.jwtSecret, duration);
     }
     public String generateRefreshToken(User user) {

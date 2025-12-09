@@ -3,9 +3,14 @@ package com.cardgame.cardgameserver.configuration.jwt;
 import com.cardgame.cardgameserver.googleAuth.GoogleAuthService;
 import com.cardgame.cardgameserver.user.User;
 import com.cardgame.cardgameserver.user.UserService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Optional;
 
 @RestController
 public class OauthController {
@@ -21,14 +26,17 @@ public class OauthController {
     }
 
     @GetMapping("/oauth2callback")
-    public String oauth2callback(@RequestParam String code) {
+    public ResponseEntity<String> oauth2callback(@RequestParam String code) {
         String idToken = googleAuthService.verifyGoogleCode(code);
         if (idToken != null) {
             String googleUserEmail = googleAuthService.getGoogleUserEmail(idToken);
-            User user = userService.registerUser(googleUserEmail);
-            return jwtService.generateJwt(user);
+            Optional<User> userOptional =  userService.getUserByEmail(googleUserEmail);
+            User user;
+            user = userOptional.orElseGet(() -> userService.registerUser(googleUserEmail));
+            String jwt = jwtService.generateJwt(user);
+            return ResponseEntity.ok(jwt);
         }else {
-            throw new RuntimeException("Google code verification failed.");
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Google code verification failed.");
         }
     }
 }
