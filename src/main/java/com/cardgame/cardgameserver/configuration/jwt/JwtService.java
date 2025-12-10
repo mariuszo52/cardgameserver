@@ -17,6 +17,12 @@ public class JwtService {
     @Value("${REFRESH_SECRET}")
     private String refreshSecret;
 
+    public TokensDto generateTokens(User user) {
+        String jwt = generateJwt(user);
+        String refreshToken = generateRefreshToken(user);
+        return new TokensDto(jwt, refreshToken);
+    }
+
     public String generateJwt(User user) {
         final long duration = 1000L * 60 * 2;
         return generate(user, this.jwtSecret, duration);

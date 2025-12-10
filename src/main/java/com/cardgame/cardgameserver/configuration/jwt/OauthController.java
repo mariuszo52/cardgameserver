@@ -26,15 +26,15 @@ public class OauthController {
     }
 
     @GetMapping("/oauth2callback")
-    public ResponseEntity<String> oauth2callback(@RequestParam String code) {
+    public ResponseEntity<?> oauth2callback(@RequestParam String code) {
         String idToken = googleAuthService.verifyGoogleCode(code);
         if (idToken != null) {
             String googleUserEmail = googleAuthService.getGoogleUserEmail(idToken);
             Optional<User> userOptional =  userService.getUserByEmail(googleUserEmail);
             User user;
             user = userOptional.orElseGet(() -> userService.registerUser(googleUserEmail));
-            String jwt = jwtService.generateJwt(user);
-            return ResponseEntity.ok(jwt);
+            TokensDto tokensDto = jwtService.generateTokens(user);
+            return ResponseEntity.ok(tokensDto);
         }else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Google code verification failed.");
         }
