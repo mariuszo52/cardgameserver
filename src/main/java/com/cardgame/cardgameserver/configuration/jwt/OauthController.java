@@ -30,13 +30,24 @@ public class OauthController {
         String idToken = googleAuthService.verifyGoogleCode(code);
         if (idToken != null) {
             String googleUserEmail = googleAuthService.getGoogleUserEmail(idToken);
-            Optional<User> userOptional =  userService.getUserByEmail(googleUserEmail);
+            Optional<User> userOptional = userService.getUserByEmail(googleUserEmail);
             User user;
             user = userOptional.orElseGet(() -> userService.registerUser(googleUserEmail));
             TokensDto tokensDto = jwtService.generateTokens(user);
             return ResponseEntity.ok(tokensDto);
-        }else {
+        } else {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Google code verification failed.");
+        }
+    }
+
+    @GetMapping("/refresh-token")
+    ResponseEntity<String> refreshToken(@RequestParam String refreshToken) {
+        try {
+            String newJwt = googleAuthService.refreshJwt(refreshToken);
+            return ResponseEntity.ok(newJwt);
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(e.getMessage());
         }
     }
 }
