@@ -4,10 +4,12 @@ import com.cardgame.cardgameserver.configuration.jwt.JwtService;
 import com.cardgame.cardgameserver.user.User;
 import com.cardgame.cardgameserver.user.UserRepository;
 import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.JwtParser;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.*;
 import org.springframework.stereotype.Service;
@@ -30,8 +32,8 @@ public class GoogleAuthService {
     private String GOOGLE_CLIENT_SECRET;
     @Value("${REDIRECT_URI}")
     private String REDIRECT_URI;
-    @Value("${JWT_SECRET}")
-    private String JWT_SECRET;
+    @Value("${REFRESH_SECRET}")
+    private String REFRESH_SECRET;
 
     private final RestTemplate restTemplate = new RestTemplate();
 
@@ -80,12 +82,14 @@ public class GoogleAuthService {
         }
     }
 
-    public String refreshJwt(String refreshToken) {
-        SecretKey key = Keys.hmacShaKeyFor(JWT_SECRET.getBytes(StandardCharsets.UTF_8));
-        JwtParser parser = Jwts.parser().verifyWith(key).build();
-        Claims claims = parser.parseSignedClaims(refreshToken).getPayload();
-        String email = claims.get("email").toString();
-        User user = userRepository.findByEmail(email).orElseThrow(() -> new EntityNotFoundException("User not found"));
+
+    public String refreshToken(@NotNull String refreshToken) {
+        Jws<Claims> claimsJws = Jwts.parser().setSigningKey(REFRESH_SECRET).build().parseClaimsJws(refreshToken);
+        String email = claimsJws.getBody().get("email", String.class);
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new EntityNotFoundException("User not found."));
         return jwtService.generateJwt(user);
+
     }
+
 }
