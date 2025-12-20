@@ -41,9 +41,9 @@ public class OauthController {
     }
 
     @GetMapping("/refresh-token")
-    ResponseEntity<String> refreshToken(@RequestParam String refreshToken) {
+    ResponseEntity<?> refreshToken(@RequestParam String refreshToken) {
         try {
-            String newJwt = googleAuthService.refreshToken(refreshToken);
+            TokensDto newJwt = googleAuthService.refreshToken(refreshToken);
             return ResponseEntity.ok(newJwt);
 
         } catch (Exception e) {

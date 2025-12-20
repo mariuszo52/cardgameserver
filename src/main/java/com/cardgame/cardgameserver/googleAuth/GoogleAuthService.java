@@ -1,6 +1,7 @@
 package com.cardgame.cardgameserver.googleAuth;
 
 import com.cardgame.cardgameserver.configuration.jwt.JwtService;
+import com.cardgame.cardgameserver.configuration.jwt.TokensDto;
 import com.cardgame.cardgameserver.user.User;
 import com.cardgame.cardgameserver.user.UserRepository;
 import io.jsonwebtoken.Claims;
@@ -19,6 +20,12 @@ import org.springframework.web.client.RestTemplate;
 
 import javax.crypto.SecretKey;
 import java.nio.charset.StandardCharsets;
+import java.sql.Time;
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.time.temporal.TemporalAmount;
+import java.util.Date;
 import java.util.Map;
 
 @Service
@@ -83,12 +90,19 @@ public class GoogleAuthService {
     }
 
 
-    public String refreshToken(@NotNull String refreshToken) {
+    public TokensDto refreshToken(@NotNull String refreshToken) {
         Jws<Claims> claimsJws = Jwts.parser().setSigningKey(REFRESH_SECRET).build().parseClaimsJws(refreshToken);
-        String email = claimsJws.getBody().get("email", String.class);
+        Claims claims = claimsJws.getBody();
+        String email = claims.get("email", String.class);
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new EntityNotFoundException("User not found."));
-        return jwtService.generateJwt(user);
+        Date refreshExpiration = claims.getExpiration();
+        if (refreshExpiration.before(new Date(Instant.now().plus(2, ChronoUnit.DAYS).toEpochMilli()))) {
+            return jwtService.generateTokens(user);
+        }else {
+            String jwt = jwtService.generateJwt(user);
+            return new TokensDto(jwt, null);
+        }
 
     }
 

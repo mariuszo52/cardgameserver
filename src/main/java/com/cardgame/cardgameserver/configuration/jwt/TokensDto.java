@@ -13,7 +13,6 @@ public class TokensDto {
     @NotNull
     @NotBlank
     private String jwt;
-    @NotNull
     @NotBlank
     private String refreshToken;
 }
