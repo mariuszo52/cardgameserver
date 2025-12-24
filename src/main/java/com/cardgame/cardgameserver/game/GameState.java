@@ -4,6 +4,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
 import java.util.LinkedList;
 import java.util.Map;
@@ -19,6 +21,6 @@ public class GameState {
     private Map<Integer, PlayerState> players;
     private int activePlayerId;
     private GamePhase phase;
-    Queue<AbilityContext> resolvingQueue = new LinkedList<>();
+    private Queue<AbilityContext> resolvingQueue = new LinkedList<>();
 }
 
